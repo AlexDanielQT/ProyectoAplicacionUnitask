@@ -1,7 +1,9 @@
 package com.example.proyect.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,17 +17,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.proyect.R
 import com.example.proyect.utils.ButtonUtils
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTaskScreen(
-    onDoneClick: () -> Unit
+    onDoneClick: () -> Unit,
+    navController: NavController // Ahora pasamos el navController como parámetro
 ) {
     // Estado para la fecha y hora
     val dateAndTime = remember { mutableStateOf("Jun 10, 2024 - 9:41 AM") }
@@ -33,7 +37,7 @@ fun AddTaskScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFef7ff)) // Color de fondo
+            .background(MaterialTheme.colorScheme.background) // Color de fondo según el tema
     ) {
         Column(
             modifier = Modifier
@@ -41,34 +45,37 @@ fun AddTaskScreen(
                 .padding(16.dp),
             horizontalAlignment = Alignment.Start
         ) {
-            // Imagen en la parte superior a 30 píxeles del margen superior
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 30.dp),
-
-                contentAlignment = Alignment.TopEnd
+                contentAlignment = Alignment.TopStart
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.x_square),
-                    contentDescription = null,
+                // Icono de retroceso con la funcionalidad de retroceder
+                Image(
+                    painter = painterResource(id = R.drawable.arrow_left), // Reemplaza con el ID correcto de tu recurso
+                    contentDescription = "Volver",
                     modifier = Modifier
-                        .size(40.dp)
-                        .background(Color(0xFFD0BCFF), shape = MaterialTheme.shapes.small)
+                        .size(70.dp)
+                        .padding(start = 10.dp, top = 30.dp) // Espaciado específico
+                        .clickable {
+                            // Acción de retroceder
+                            navController.popBackStack()  // Regresa a la pantalla anterior
+                        }
                 )
             }
 
             Spacer(modifier = Modifier.height(30.dp))
 
             // Curso
-            Text(text = "Curso")
+            Text(text = "Curso", color = MaterialTheme.colorScheme.onSurface)
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color(0xFFFFFFFF))
+                    .background(MaterialTheme.colorScheme.surface) // Fondo de superficie
                     .border(
                         width = 1.dp,
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
                         shape = RoundedCornerShape(8.dp)
                     )
                     .padding(16.dp)
@@ -77,7 +84,7 @@ fun AddTaskScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text = "Fisica")
+                    Text(text = "Fisica", color = MaterialTheme.colorScheme.onSurface)
                     Icon(
                         painter = painterResource(id = R.drawable.chevron_down), // Verifica el nombre del recurso
                         contentDescription = null,
@@ -89,20 +96,20 @@ fun AddTaskScreen(
             Spacer(modifier = Modifier.height(20.dp))
 
             // Fecha de entrega
-            Text(text = "Fecha de entrega")
+            Text(text = "Fecha de entrega", color = MaterialTheme.colorScheme.onSurface)
             TextField(
                 value = dateAndTime.value,
                 onValueChange = { dateAndTime.value = it },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .border(2.dp, Color(0xFFE0E0E0), shape = RoundedCornerShape(8.dp)),
-                colors = TextFieldDefaults.textFieldColors(containerColor = Color(0xFFFFFFFF))
+                    .border(2.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f), shape = RoundedCornerShape(8.dp)),
+                colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.surface)
             )
 
             Spacer(modifier = Modifier.height(20.dp))
 
             // Descripción
-            Text(text = "Descripción")
+            Text(text = "Descripción", color = MaterialTheme.colorScheme.onSurface)
             TextField(
                 value = "",
                 onValueChange = {},
@@ -110,14 +117,14 @@ fun AddTaskScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(120.dp) // Altura duplicada
-                    .border(2.dp, Color(0xFFE0E0E0), shape = RoundedCornerShape(8.dp)),
-                colors = TextFieldDefaults.textFieldColors(containerColor = Color(0xFFFFFFFF))
+                    .border(2.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f), shape = RoundedCornerShape(8.dp)),
+                colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.surface)
             )
 
             Spacer(modifier = Modifier.height(20.dp))
 
             // Notas
-            Text(text = "Detalles")
+            Text(text = "Detalles", color = MaterialTheme.colorScheme.onSurface)
             TextField(
                 value = "",
                 onValueChange = {},
@@ -125,8 +132,8 @@ fun AddTaskScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(120.dp) // Altura duplicada
-                    .border(2.dp, Color(0xFFE0E0E0), shape = RoundedCornerShape(8.dp)),
-                colors = TextFieldDefaults.textFieldColors(containerColor = Color(0xFFFFFFFF))
+                    .border(2.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f), shape = RoundedCornerShape(8.dp)),
+                colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.surface)
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -140,7 +147,7 @@ fun AddTaskScreen(
             ) {
                 ButtonUtils(
                     text = "Confirmar",
-                    onClick = onDoneClick,
+                    onClick = onDoneClick, // Realiza la acción definida (navegar hacia atrás)
                     icon = R.drawable.arrow_right
                 )
             }
@@ -151,5 +158,6 @@ fun AddTaskScreen(
 @Preview(showBackground = true)
 @Composable
 fun PreviewAddTaskScreen() {
-    AddTaskScreen(onDoneClick = {})
+    AddTaskScreen(onDoneClick = {}, navController = rememberNavController()) // Pasa un navController de ejemplo
 }
+

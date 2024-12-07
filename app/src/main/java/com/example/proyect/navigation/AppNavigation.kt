@@ -4,10 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.proyect.screens.*
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
+
     NavHost(
         navController = navController,
         startDestination = "welcome_screen"
@@ -25,13 +27,13 @@ fun AppNavigation(navController: NavHostController) {
                 onDoneClick = {
                     navController.navigate("schedule_screen")
                 },
-                navController = navController // Aquí pasamos el navController
+                navController = navController
             )
         }
 
         composable("schedule_screen") {
             ScheduleScreen(
-                navController = navController, // Pasamos el NavController aquí también
+                navController = navController,
                 onBackClick = {
                     navController.popBackStack()
                 },
@@ -50,14 +52,31 @@ fun AppNavigation(navController: NavHostController) {
         }
 
         composable("home_screen") {
-            MainPage()
+            MainPage(navController = navController)  // Asegúrate de pasar el navController aquí
         }
 
-        composable("add_courses_schedule") { // Pantalla de Añadir Cursos y Horarios
+        composable("add_courses_schedule") {
             CursosHoraYAulaScreen(
                 onBackClick = { navController.popBackStack() },
                 onDoneClick = { navController.popBackStack() }
             )
         }
+
+        composable("enter_courses_screen") {
+            EnterCoursesScreen(
+                onBackClick = { navController.popBackStack() },
+                onDoneClick = { navController.popBackStack() }
+            )
+        }
+
+        composable("add_task") {
+            AddTaskScreen(
+                onDoneClick = {
+                    navController.popBackStack()  // Regresa a la pantalla anterior después de añadir la tarea
+                },
+                navController = navController  // Usa el navController global aquí
+            )
+        }
+
     }
 }

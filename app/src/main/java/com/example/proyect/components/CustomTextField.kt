@@ -43,12 +43,4 @@ fun CustomTextField(label: String, value: String, onValueChange: (String) -> Uni
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun CustomTextFieldPreview() {
-    CustomTextField(
-        label = "Nombre del Curso",
-        value = "Introduzca el nombre",
-        onValueChange = {}
-    )
-}
+

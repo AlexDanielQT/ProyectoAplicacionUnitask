@@ -101,8 +101,15 @@ fun CalendarScreen() {
                                     modifier = Modifier
                                         .padding(4.dp)
                                         .size(48.dp) // Tamaño de los días
-                                        .background(Color(0xFFECE6F0), shape = RoundedCornerShape(12.dp)) // Fondo con color
-                                        .border(1.dp, Color(0xFF1D1B20), shape = RoundedCornerShape(12.dp)) // Borde
+                                        .background(
+                                            Color(0xFFECE6F0),
+                                            shape = RoundedCornerShape(12.dp)
+                                        ) // Fondo con color
+                                        .border(
+                                            1.dp,
+                                            Color(0xFF1D1B20),
+                                            shape = RoundedCornerShape(12.dp)
+                                        ) // Borde
                                 ) {
                                     Text(
                                         text = dayOfMonth.toString(),

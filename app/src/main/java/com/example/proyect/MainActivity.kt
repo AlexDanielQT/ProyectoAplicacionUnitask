@@ -22,10 +22,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ProyectTheme {
-                // Configurar el NavController aquí
+                // Aquí obtenemos el NavController
                 val navController = rememberNavController()
 
-                // Iniciar la navegación
+                // Llamamos a AppNavigation y le pasamos el navController
                 AppNavigation(navController = navController)
             }
         }

@@ -16,7 +16,7 @@ import com.example.proyect.data.model.Task
 @Composable
 fun TaskCard(
     tasks: List<Task>,
-    onAddTaskClick: () -> Unit
+    onAddTaskClick: () -> Unit // Recibe la función de navegación
 ) {
     val cardBackgroundColor = MaterialTheme.colorScheme.surface // Color de fondo del card
     val textColor = MaterialTheme.colorScheme.onSurface // Color del texto
@@ -54,7 +54,7 @@ fun TaskCard(
                 Spacer(modifier = Modifier.width(8.dp))
 
                 FloatingActionButton(
-                    onClick = onAddTaskClick,
+                    onClick = onAddTaskClick, // Llama a la función de navegación
                     containerColor = MaterialTheme.colorScheme.primary, // Color del botón flotante
                     modifier = Modifier.size(40.dp)
                 ) {

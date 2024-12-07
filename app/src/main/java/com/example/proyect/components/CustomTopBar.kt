@@ -9,7 +9,7 @@ import com.example.proyect.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomTopBar(title: String, onNavigationClick: () -> Unit) {
+fun CustomTopBar(title: String, onClick: () -> Unit) {
     val topBarColor = MaterialTheme.colorScheme.primary
     val contentColor = MaterialTheme.colorScheme.onPrimary
 
@@ -18,7 +18,7 @@ fun CustomTopBar(title: String, onNavigationClick: () -> Unit) {
             Text(text = title, color = contentColor)
         },
         navigationIcon = {
-            IconButton(onClick = onNavigationClick) {
+            IconButton(onClick = onClick) {
                 Icon(
                     painter = painterResource(id = R.drawable.navbar),
                     contentDescription = "Abrir menú",

@@ -148,8 +148,3 @@ fun PreviewEditTaskScreen(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewEditTaskScreen() {
-    AddTaskScreen(onDoneClick = {})
-}
