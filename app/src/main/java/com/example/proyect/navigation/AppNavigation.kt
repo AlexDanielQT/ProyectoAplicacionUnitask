@@ -1,11 +1,15 @@
 package com.example.proyect.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import com.example.proyect.data.repository.CourseRepository
 import com.example.proyect.screens.*
+import com.example.proyect.viewmodel.CourseFormViewModel
+import com.example.proyect.viewmodel.CourseFormViewModelFactory
+import com.example.proyect.viewmodel.CoursesViewModel
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
@@ -23,13 +27,16 @@ fun AppNavigation(navController: NavHostController) {
         }
 
         composable("add_courses") {
+            val coursesViewModel: CoursesViewModel = viewModel() // Obtén el CoursesViewModel
             AddCourses(
+                viewModel = coursesViewModel,  // Pasa el CoursesViewModel
                 onDoneClick = {
                     navController.navigate("schedule_screen")
                 },
                 navController = navController
             )
         }
+
 
         composable("schedule_screen") {
             ScheduleScreen(
@@ -63,11 +70,18 @@ fun AppNavigation(navController: NavHostController) {
         }
 
         composable("enter_courses_screen") {
+            val repository = CourseRepository()  // Crear una instancia del repository
+            val courseFormViewModel: CourseFormViewModel = viewModel(
+                factory = CourseFormViewModelFactory(repository)  // Pasar el factory con el repository
+            )
+
             EnterCoursesScreen(
+                viewModel = courseFormViewModel,  // Pasar el ViewModel
                 onBackClick = { navController.popBackStack() },
                 onDoneClick = { navController.popBackStack() }
             )
         }
+
 
         composable("add_task") {
             AddTaskScreen(
@@ -77,6 +91,48 @@ fun AppNavigation(navController: NavHostController) {
                 navController = navController  // Usa el navController global aquí
             )
         }
+
+        composable("home_screen") {
+            MainPage(navController = navController)
+        }
+
+        composable("history_task_screen") {
+            HistoryScreen(navController = navController)
+        }
+
+        composable("courses_screen") {
+            CoursesScreen(navController = navController)
+        }
+
+        composable("calendar_screen") {
+            CalendarScreen(navController = navController)
+        }
+
+        composable("task_details") {
+            TaskDetailsScreen(
+                onBackClick = { navController.popBackStack() }, // Regresar a la pantalla anterior
+                onEditClick = { navController.navigate("edit_task_screen") } // Navegar a la pantalla de edición
+            )
+        }
+
+
+        composable("edit_task_screen") {
+            PreviewEditTaskScreen(
+                onDoneClick = { navController.popBackStack() },  // Confirmar regresa a TaskDetailsScreen
+                navController = navController  // Pasamos el navController aquí para navegar
+            )
+        }
+
+        composable("courses_screen") {
+            CoursesScreen(navController = navController)
+        }
+
+        composable("course_details_screen/{courseName}") { backStackEntry ->
+            val courseName = backStackEntry.arguments?.getString("courseName") ?: "Desconocido"
+            CourseDetailsScreen(courseName = courseName, navController = navController)
+        }
+
+
 
     }
 }

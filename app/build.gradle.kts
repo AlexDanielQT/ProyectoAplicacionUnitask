@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -32,6 +33,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -59,8 +61,19 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
+
     // Agregar la dependencia de navegación Compose
     implementation("androidx.navigation:navigation-compose:2.6.0")
+
+    // Dependencia de Firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-analytics")
+
+    // Agregar Firebase Firestore
+    implementation("com.google.firebase:firebase-firestore-ktx") // Dependencia para Firestore
+
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1") // Verifica la última versión disponible
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

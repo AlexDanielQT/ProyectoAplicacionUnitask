@@ -5,24 +5,22 @@ import com.example.proyect.data.model.Course
 class CourseRepository {
     private val courses = mutableListOf<Course>()
 
-    // Obtener todos los cursos
-    fun getAllCourses(): List<Course> = courses
+    fun getAllCourses(): List<Course> {
+        return courses.toList()
+    }
 
-    // Agregar un curso
     fun addCourse(course: Course) {
         courses.add(course)
     }
 
-    // Actualizar un curso
-    fun updateCourse(course: Course) {
-        val index = courses.indexOfFirst { it.id == course.id }
+    fun updateCourse(updatedCourse: Course) {
+        val index = courses.indexOfFirst { it.id == updatedCourse.id }
         if (index != -1) {
-            courses[index] = course
+            courses[index] = updatedCourse
         }
     }
 
-    // Eliminar un curso
-    fun deleteCourse(course: Course) {
-        courses.remove(course)
+    fun deleteCourse(courseId: Int) {
+        courses.removeAll { it.id == courseId }
     }
 }

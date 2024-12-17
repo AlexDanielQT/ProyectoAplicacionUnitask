@@ -1,8 +1,5 @@
 package com.example.proyect.screens
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,29 +14,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.proyect.R
 import com.example.proyect.components.CustomTopBar
 import com.example.proyect.components.TaskCard
 import com.example.proyect.viewmodel.TaskViewModel
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.TextStyle
 import java.util.*
 
 @Composable
 fun MainPage(navController: NavHostController, viewModel: TaskViewModel = viewModel()) {
-    val tasks = viewModel.tasks.collectAsState(initial = emptyList()).value
+    val tasks by viewModel.tasks.collectAsState(initial = emptyList())
     val backgroundColor = MaterialTheme.colorScheme.background
     val onPrimaryColor = MaterialTheme.colorScheme.onPrimary
 
     var isDrawerOpen by remember { mutableStateOf(false) }
-    var screenTitle by remember { mutableStateOf("Cursos de hoy") }
+    var screenTitle by remember { mutableStateOf("Inicio") }
     val topBarHeight = 56.dp // Altura de la barra superior
     val topBarPadding = 8.dp // Padding superior para la barra
 
@@ -72,10 +66,7 @@ fun MainPage(navController: NavHostController, viewModel: TaskViewModel = viewMo
         ) {
             // 🔹 Barra lateral con visibilidad controlada
             AnimatedVisibility(visible = isDrawerOpen) {
-                DrawerContent(onItemClick = { item ->
-                    isDrawerOpen = false
-                    screenTitle = item // Cambiar título dinámicamente
-                })
+                DrawerContent(navController = navController)
             }
 
             Column(
@@ -117,21 +108,6 @@ fun MainPage(navController: NavHostController, viewModel: TaskViewModel = viewMo
                             }
                         }
                     }
-
-                    IconButton(
-                        onClick = {
-                            // Acción para este botón (aún no definida)
-                        },
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .padding(8.dp)
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.maximize_square),
-                            contentDescription = "Expandir",
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -149,20 +125,39 @@ fun MainPage(navController: NavHostController, viewModel: TaskViewModel = viewMo
 
 
 // 🔹 Contenido de la barra lateral
+// Corrección en DrawerContent para recibir navController directamente.
 @Composable
-fun DrawerContent(onItemClick: (String) -> Unit) {
+fun DrawerContent(navController: NavHostController) {
     Column(
         modifier = Modifier
             .width(80.dp) // Ancho compacto de la barra
             .fillMaxHeight()
             .background(MaterialTheme.colorScheme.surface)
     ) {
-        // Elementos de la barra de navegación
-        DrawerItem(text = "Tareas", icon = R.drawable.edit_square, onClick = { onItemClick("Tareas") })
-        DrawerItem(text = "Cursos", icon = R.drawable.navbar, onClick = { onItemClick("Cursos") })
-        DrawerItem(text = "Calendario", icon = R.drawable.check_square, onClick = { onItemClick("Calendario") })
+        DrawerItem(
+            text = "Home",
+            icon = R.drawable.navbar,
+            onClick = { navController.navigate("home_screen") }
+        )
+        DrawerItem(
+            text = "Tareas",
+            icon = R.drawable.edit_square,
+            onClick = { navController.navigate("history_task_screen") }
+        )
+        DrawerItem(
+            text = "Cursos",
+            icon = R.drawable.navbar,
+            onClick = { navController.navigate("courses_screen") }
+        )
+        DrawerItem(
+            text = "Calendario",
+            icon = R.drawable.check_square,
+            onClick = { navController.navigate("calendar_screen") }
+        )
     }
 }
+
+
 
 // 🔹 Elemento individual de la barra lateral
 @Composable

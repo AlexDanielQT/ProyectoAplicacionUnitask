@@ -2,6 +2,7 @@ package com.example.proyect.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,17 +16,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.proyect.R
 import com.example.proyect.utils.ButtonUtils
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PreviewEditTaskScreen(
-    onDoneClick: () -> Unit
+    onDoneClick: () -> Unit,
+    navController: NavHostController  // Agregamos navController para la navegación
 ) {
     // Estado para la fecha y hora
     val dateAndTime = remember { mutableStateOf("Jun 10, 2024 - 9:41 AM") }
@@ -33,7 +34,7 @@ fun PreviewEditTaskScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFef7ff)) // Color de fondo
+            .background(LightBackground) // Usamos LightBackground como fondo principal
     ) {
         Column(
             modifier = Modifier
@@ -46,7 +47,6 @@ fun PreviewEditTaskScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 30.dp),
-
                 contentAlignment = Alignment.TopEnd
             ) {
                 Icon(
@@ -54,21 +54,22 @@ fun PreviewEditTaskScreen(
                     contentDescription = null,
                     modifier = Modifier
                         .size(40.dp)
-                        .background(Color(0xFFD0BCFF), shape = MaterialTheme.shapes.small)
+                        .background(LightPrimary, shape = MaterialTheme.shapes.small)  // Usamos LightPrimary para el fondo del ícono
+                        .clickable { navController.popBackStack() }  // Regresar a TaskDetailsScreen
                 )
             }
 
             Spacer(modifier = Modifier.height(30.dp))
 
             // Curso
-            Text(text = "Curso")
+            Text(text = "Curso", color = LightOnPrimary) // Usamos LightOnPrimary para el color del texto
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color(0xFFFFFFFF))
+                    .background(LightSurface)  // Usamos LightSurface para el fondo
                     .border(
                         width = 1.dp,
-                        color = Color.Gray,
+                        color = LightSecondary,  // Usamos LightSecondary para el borde
                         shape = RoundedCornerShape(8.dp)
                     )
                     .padding(16.dp)
@@ -77,7 +78,7 @@ fun PreviewEditTaskScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text = "Fisica")
+                    Text(text = "Fisica", color = LightOnPrimary) // Usamos LightOnPrimary para el color del texto
                     Icon(
                         painter = painterResource(id = R.drawable.chevron_down), // Verifica el nombre del recurso
                         contentDescription = null,
@@ -89,20 +90,20 @@ fun PreviewEditTaskScreen(
             Spacer(modifier = Modifier.height(20.dp))
 
             // Fecha de entrega
-            Text(text = "Fecha de entrega")
+            Text(text = "Fecha de entrega", color = LightOnPrimary)
             TextField(
                 value = dateAndTime.value,
                 onValueChange = { dateAndTime.value = it },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .border(2.dp, Color(0xFFE0E0E0), shape = RoundedCornerShape(8.dp)),
-                colors = TextFieldDefaults.textFieldColors(containerColor = Color(0xFFFFFFFF))
+                    .border(2.dp, LightSecondary, shape = RoundedCornerShape(8.dp)),
+                colors = TextFieldDefaults.textFieldColors(containerColor = LightBackground)
             )
 
             Spacer(modifier = Modifier.height(20.dp))
 
             // Descripción
-            Text(text = "Descripción")
+            Text(text = "Descripción", color = LightOnPrimary)
             TextField(
                 value = "",
                 onValueChange = {},
@@ -110,14 +111,14 @@ fun PreviewEditTaskScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(120.dp) // Altura duplicada
-                    .border(2.dp, Color(0xFFE0E0E0), shape = RoundedCornerShape(8.dp)),
-                colors = TextFieldDefaults.textFieldColors(containerColor = Color(0xFFFFFFFF))
+                    .border(2.dp, LightSecondary, shape = RoundedCornerShape(8.dp)),
+                colors = TextFieldDefaults.textFieldColors(containerColor = LightBackground)
             )
 
             Spacer(modifier = Modifier.height(20.dp))
 
             // Notas
-            Text(text = "Detalles")
+            Text(text = "Detalles", color = LightOnPrimary)
             TextField(
                 value = "",
                 onValueChange = {},
@@ -125,8 +126,8 @@ fun PreviewEditTaskScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(120.dp) // Altura duplicada
-                    .border(2.dp, Color(0xFFE0E0E0), shape = RoundedCornerShape(8.dp)),
-                colors = TextFieldDefaults.textFieldColors(containerColor = Color(0xFFFFFFFF))
+                    .border(2.dp, LightSecondary, shape = RoundedCornerShape(8.dp)),
+                colors = TextFieldDefaults.textFieldColors(containerColor = LightBackground)
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -140,11 +141,10 @@ fun PreviewEditTaskScreen(
             ) {
                 ButtonUtils(
                     text = "Confirmar",
-                    onClick = onDoneClick,
+                    onClick = { navController.popBackStack() }, // Regresar a TaskDetailsScreen al confirmar
                     icon = R.drawable.arrow_right
                 )
             }
         }
     }
 }
-
